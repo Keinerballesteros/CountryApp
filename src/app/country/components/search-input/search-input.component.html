@@ -1,3 +1,4 @@
+
 <section class="flex flex-row gap-2 mt-2">
 
   <input
@@ -6,7 +7,9 @@
   [placeholder]="placeholder()"
   autofocus
   #txtSearch
-  (keyup.enter)="value.emit(txtSearch.value)"
+  (keyup.enter)="inputVaue.set(txtSearch.value)"
+  (keyup)="inputVaue.set(txtSearch.value)"
+  [value]="inputVaue()"
   />
 
   <button class="btn btn-primary"

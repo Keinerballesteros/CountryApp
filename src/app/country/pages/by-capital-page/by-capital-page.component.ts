@@ -1,10 +1,11 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, Inject, inject, signal } from '@angular/core';
 import { SearchInputComponent } from "../../components/search-input/search-input.component";
 import { CountryListComponent } from "../../components/country-list/country-list.component";
 import { CountryService } from '../../services/country.service';
 import { Country } from '../../interfaces/country.inteface';
-import { of, switchMap } from 'rxjs';
-import { toSignal } from '@angular/core/rxjs-interop'; // Para convertir Observables a Signals
+import { ActivatedRoute, Router } from '@angular/router';
+
+
 
 
 @Component({
@@ -23,6 +24,14 @@ export class ByCapitalPageComponent {
   isError = signal<string | null>(null);
   countries = signal<Country[]>([]);
 
+
+  activatedRoute = inject(ActivatedRoute);
+  router = Inject(Router);
+
+  queryParam = this.activatedRoute.snapshot.queryParamMap.get('query') ?? '';
+
+  query = signal(this.queryParam);
+
   onSearch(query: string){
     if(this.isLoading()) return;
 
@@ -33,6 +42,13 @@ export class ByCapitalPageComponent {
       next: (countries) => {
         this.isLoading.set(false);
         this.countries.set(countries);
+        this.router.navigate(
+          ['/countries/bycapital'], {
+            queryParams: {
+              query: query
+            }
+          }
+        )
       },
       error: (err) => {
         this.isLoading.set(false);

@@ -32,7 +32,7 @@ export const countryRoutes: Routes = [
 
       {
         path: '**',
-        redirectTo: 'by-capital',
+        redirectTo: 'by-country'
       }
   ]
   }
